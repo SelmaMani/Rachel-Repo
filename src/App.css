@@ -7,9 +7,6 @@
   --dark-green: #373D20;
 }
 
-
-
-
 body, html {
   margin: 0;
   padding: 0;
@@ -26,7 +23,7 @@ body, html {
 
 .title-big {
   font-family: 'Vollkorn SC', serif; /* Use Vollkorn SC for big titles */
-  font-size: 36px;
+  font-size: 38px;
   font-weight: 600; /* Bold */
   color: #333; /* You can adjust this color */
 }
