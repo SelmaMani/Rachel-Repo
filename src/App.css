@@ -1,0 +1,156 @@
+:root{
+  --white: white;
+  --dark-brown : #6C584C;
+  --light-brown: #A98467;
+  --beige : #F0EAD2;
+  --light-green : #717744;
+  --dark-green: #373D20;
+}
+
+
+
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+
+.App {
+  background-image: url('./assets/background.png'); /* Absolute path from the public folder */
+  background-size: cover; /* Ensure the background covers the entire container */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Avoid repeating the background image */
+}
+
+.title-big {
+  font-family: 'Vollkorn SC', serif; /* Use Vollkorn SC for big titles */
+  font-size: 36px;
+  font-weight: 600; /* Bold */
+  color: #333; /* You can adjust this color */
+}
+
+/* Medium Title (24px) */
+.title-medium {
+  font-family: 'Vollkorn SC', sans-serif; /* Use Tsukimi Rounded for medium titles */
+  font-size: 24px;
+  font-weight: 500; /* Semi-bold */
+  color: #333; /* You can adjust this color */
+}
+
+/* Normal Text Title (16px) */
+.title-normal {
+  font-family: 'Tsukimi Rounded', sans-serif; /* Use Tsukimi Rounded for normal text titles */
+  font-size: 16px;
+  font-weight: 400; /* Regular */
+  color: #333; /* You can adjust this color */
+}
+
+/* Normal Text Title (16px) */
+.title-normal-volkorn {
+  font-family: 'Vollkorn SC', sans-serif; /* Use Tsukimi Rounded for normal text titles */
+  font-size: 20px;
+  font-weight: 400; /* Regular */
+  color: #333; /* You can adjust this color */
+}
+
+/* Additional styles can go here */
+
+
+.hero {
+  background-image: url('./assets/deco.png');
+  background-repeat: none;
+  background-size: cover;
+  text-align: center;
+  padding: 100px 20px;
+  height: 70vh;
+}
+.hero h1 {
+  margin-top: 200px;
+}
+
+.start{
+  background-color: var(--dark-brown);
+  color : var(--white);
+  border: none;
+  padding: 10px 20px;
+  margin-top: 50px;
+}
+
+.start:hover{
+  cursor: pointer;
+}
+
+.cta-button {
+  padding: 10px 20px;
+  background-color: #7b3f00;
+  color: #333;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  color: #000000;
+  padding: 10px 40px;
+}
+
+.navbar ul{
+  display: flex;
+  flex-direction:  row;
+  text-decoration: none;
+  list-style: none;
+}
+.nav-links a {
+  color: #333;
+  text-decoration: none;
+  padding: 0 15px;
+}
+/* App.css */
+
+.why-choose-us {
+  background-color: var(--dark-brown);
+  padding: 100px;
+  text-align: center;
+}
+
+.why-choose-us h2 {
+  font-size: 36px; /* Large title size */
+  font-family: 'Volkorn', serif; /* Assuming you use Volkorn RC */
+  color: var(--white); /* Defined in :root */
+  text-decoration: underline 1px;
+  text-underline-offset: 10px;
+  margin-bottom: 40px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columns */
+  grid-gap: 50px; /* Gap between the grid items */
+}
+
+.grid-item {
+  text-align: left;
+  background-color: #fff;
+  border: 2px dashed black;
+  padding: 10px 20px; /* Add extra horizontal space to push content inward */
+}
+
+
+.grid-item h3 {
+  font-size: 24px; /* Medium title size */
+  font-family: 'Volkorn', serif; /* Font for the title */
+  color: var(--text-color);
+  margin-bottom: 10px;
+}
+
+.grid-item p {
+  font-size: 16px; /* Normal text size */
+  font-family: 'Tsukimi Rounded', sans-serif; /* Assuming Tsukimi is used for body text */
+  color: var(--text-light-color);
+  line-height: 1.5;
+}
