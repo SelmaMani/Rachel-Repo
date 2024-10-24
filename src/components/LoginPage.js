@@ -11,7 +11,15 @@ const LoginPage = () => {
     // Handle login logic here
     console.log('Email:', email, 'Password:', password);
   };
+  // Prevent drag and drop
+  const preventDragOver = (e) => {
+    e.preventDefault();
+  };
 
+  const preventDrop = (e) => {
+    e.preventDefault();
+  };
+  
   return (
     <div className="login-hero">
       <h1 className="title-big">Welcome Back!</h1>
@@ -24,7 +32,9 @@ const LoginPage = () => {
           <input 
             type="email" 
             placeholder="Email" 
-            value={email} 
+            value={email}
+            onDragOver={preventDragOver} // Prevent drag over       
+            onDrop={preventDrop} // Prevent drop
             onChange={(e) => setEmail(e.target.value)} 
             required 
             className="login-input text-normal-volkorn" 
@@ -34,7 +44,9 @@ const LoginPage = () => {
           <img src={inputIcon} alt="Password Icon" className="input-icon" /> {/* Password Icon */}
           <input 
             type="password" 
-            placeholder="Password" 
+            placeholder="Password"
+            onDragOver={preventDragOver} // Prevent drag over       
+            onDrop={preventDrop} // Prevent drop
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
             required 
