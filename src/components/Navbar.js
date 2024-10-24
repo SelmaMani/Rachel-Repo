@@ -9,9 +9,9 @@ const Navbar = () => {
         <img src={logo} alt="Logo" /> {/* Use the imported image */}
       </div>
       <ul className="nav-links">
-        <li className="title-normal-volkorn"><a href="#menu">Menu</a></li>
-        <li className="title-normal-volkorn"><a href="#about">About</a></li>
-        <li className="title-normal-volkorn"><a href="#contact">Contact</a></li>
+        <li className="text-normal-volkorn"><a href="#menu">Menu</a></li>
+        <li className="text-normal-volkorn"><a href="#about">About</a></li>
+        <li className="text-normal-volkorn"><a href="#contact">Contact</a></li>
       </ul>
     </nav>
   );

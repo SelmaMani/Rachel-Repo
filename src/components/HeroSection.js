@@ -1,13 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import '../App.css'; // Ensure you import the App.css file
 
 const HeroSection = () => {
   return (
     <div className="hero">
       <h1 className="title-big">Find Delicious Recipes with What You Have at Home</h1>
-      <p className="title-normal">Let us find for you the best recipees you can get with
-      only what you have available at home</p>
-    <button class="start title-medium">Get Your Recipe</button>
+      <p className="text-normal">Let us find for you the best recipes you can get with only what you have available at home</p>
+      <Link to="/login"> {/* Use Link to navigate */}
+        <button className="start title-medium">Get Your Recipe</button>
+      </Link>
     </div>
   );
 };
