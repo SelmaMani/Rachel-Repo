@@ -8,6 +8,7 @@ import PopularRecipes from './components/PopularRecipes';
 import Footer from './components/Footer';
 import LoginPage from './components/LoginPage'; // Import your LoginPage component
 import SignupPage from './components/SignupPage'; // Import your SignupPage component
+import DashboardPage from './components/DashboardPage'; // Import the DashboardPage
 import './App.css';
 
 function App() {
@@ -33,6 +34,11 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           {/* Route for the signup page */}
           <Route path="/signup" element={<SignupPage />} />
+          {/* Add the Dashboard route */}
+          <Route path="/dashboard" component={DashboardPage} />
+          {/* Add the Confirmation route */}
+          <Route path="/confirm/:token" element={<LoginPage />} />
+
         </Routes>
       </div>
     </Router>
