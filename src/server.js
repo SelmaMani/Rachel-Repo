@@ -1,11 +1,11 @@
-// server.js
 const express = require('express');
-const mysql = require('mysql');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
-const session = require('express-session'); // Import express-session
+const session = require('express-session');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+require('dotenv').config(); // Load environment variables
 
 const app = express();
 const port = 5000;
@@ -15,12 +15,11 @@ app.use(cors({
     origin: 'http://localhost:3000', // Change to your frontend URL
     credentials: true // Allow cookies to be sent
 }));
-
 app.use(express.json());
 
 // Configure express-session middleware
 app.use(session({
-    secret: '123', // Change this to a secure secret key
+    secret: process.env.SESSION_SECRET || '123', // Use env variable
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -30,30 +29,24 @@ app.use(session({
     }
 }));
 
-// MySQL Connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'ikram',
-    password: 'hhhhhhhh',
-    database: 'recettemagique'
-});
+// MongoDB Connection
+const mongoURI = process.env.MONGO_URI || 'mongodb+srv://hh:hhhhhhhh@cluster0.5eb3y.mongodb.net/?retryWrites=true&w=majority&appName=recette';
 
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL: ', err);
-        return;
-    }
-    console.log('Connected to MySQL');
-});
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB Atlas'))
+    .catch((err) => console.error('Error connecting to MongoDB Atlas: ', err));
 
 // Setup Nodemailer transport
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // You can use other services too
+    service: 'gmail',
     auth: {
-        user: 'samah.ikramfarez@gmail.com', // Your email
-        pass: 'foqf vrer mjed uirp' // Your email password or an app password
+        user: process.env.EMAIL_USER, // Use env variable
+        pass: process.env.EMAIL_PASS  // Use env variable
     }
 });
+
+// Models
+const User = require('./models/User'); // Import User schema
 
 // Function to generate a random verification code
 const generateVerificationCode = () => {
@@ -61,109 +54,88 @@ const generateVerificationCode = () => {
 };
 
 // Signup function
-const handleSignup = (req, res) => {
-    console.log('Starting signup process...'); // Log the start
-    const { fullName, email, password } = req.body;
+const handleSignup = async (req, res) => {
+    try {
+        const { fullName, email, password } = req.body;
 
-    // Check if user already exists
-    console.log('Checking if user exists...');
-    const checkUserQuery = 'SELECT * FROM Users WHERE email = ?';
-    db.query(checkUserQuery, [email], (err, result) => {
-        if (err) {
-            console.error('Error checking for existing user:', err);
-            return res.status(500).json({ message: 'Server error' });
-        }
-
-        if (result.length > 0) {
-            console.log('User already exists');
+        // Check if user exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        console.log('Hashing password...');
-        bcrypt.hash(password, 10, (err, hashedPassword) => {
-            if (err) {
-                console.error('Error hashing password:', err);
-                return res.status(500).json({ message: 'Error hashing password' });
-            }
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-            // Create a confirmation token
-            const token = crypto.randomBytes(32).toString('hex');
+        // Generate token
+        const token = crypto.randomBytes(32).toString('hex');
 
-            // Use the correct column names here
-            const insertUserQuery = 'INSERT INTO Users (full_name, email, password, token, isVerified) VALUES (?, ?, ?, ?, 0)';
-            db.query(insertUserQuery, [fullName, email, hashedPassword, token], (err) => {
-                if (err) {
-                    console.error('Error inserting new user:', err);
-                    return res.status(500).json({ message: 'Error registering user' });
-                }
-
-                // Send confirmation email
-                const confirmationLink = `http://localhost:3000/confirm/${token}`;
-                const mailOptions = {
-                    from: 'samah.ikramfarez@gmail.com', // Your email
-                    to: email,
-                    subject: 'Email Confirmation',
-                    html: `<h1>Welcome ${fullName}!</h1>
-                           <p>Please confirm your email by clicking the link: 
-                           <a href="${confirmationLink}">Confirm Email</a></p>`
-                };
-
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        console.error('Error sending email:', error);
-                        return res.status(500).json({ message: 'Error sending confirmation email' });
-                    }
-                    console.log('Confirmation email sent:', info.response);
-                    res.status(200).json({ message: 'User registered successfully, please confirm your email' });
-                });
-            });
+        // Create new user
+        const newUser = new User({
+            full_name: fullName,
+            email,
+            password: hashedPassword,
+            token,
+            isVerified: false
         });
-    });
+
+        await newUser.save();
+
+        // Send confirmation email
+        const confirmationLink = `http://localhost:3000/confirm/${token}`;
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Email Confirmation',
+            html: `<h1>Welcome ${fullName}!</h1>
+                   <p>Please confirm your email by clicking the link: 
+                   <a href="${confirmationLink}">Confirm Email</a></p>`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+                return res.status(500).json({ message: 'Error sending confirmation email' });
+            }
+            console.log('Confirmation email sent:', info.response);
+            res.status(200).json({ message: 'User registered successfully, please confirm your email' });
+        });
+
+    } catch (error) {
+        console.error('Error during signup:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 };
 
 // Login function
-const handleLogin = (req, res) => {
-    const { email, password } = req.body;
+const handleLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-    const query = 'SELECT * FROM Users WHERE email = ?';
-    db.query(query, [email], (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Server error' });
-        }
-
-        if (result.length === 0) {
+        const user = await User.findOne({ email });
+        if (!user) {
             return res.status(401).json({ error: 'User not found' });
         }
 
-        const user = result[0];
-
-        // Check if user is verified
         if (!user.isVerified) {
             return res.status(403).json({ error: 'Email not confirmed. Please check your inbox.' });
         }
 
-        // Compare passwords using bcrypt
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) {
-                return res.status(500).json({ error: 'Error comparing passwords' });
-            }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Incorrect password' });
+        }
 
-            if (!isMatch) {
-                return res.status(401).json({ error: 'Incorrect password' });
-            }
+        req.session.user = {
+            email: user.email,
+            fullName: user.full_name
+        };
 
-            // Create a session for the user
-            req.session.user = {
-                email: user.email,
-                fullName: user.full_name, // Adjust according to your user schema
-            };
-
-            console.log('Session created:', req.session.user); // Log the session for debugging
-
-            // Send a success response
-            res.json({ message: 'Login successful', user });
-        });
-    });
+        res.json({ message: 'Login successful', user });
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
 };
 
 // Dashboard route
@@ -176,26 +148,27 @@ app.get('/dashboard', (req, res) => {
 });
 
 // Email confirmation endpoint
-app.get('/confirm/:token', (req, res) => {
+app.get('/confirm/:token', async (req, res) => {
     const token = req.params.token;
 
-    const verifyTokenQuery = 'UPDATE Users SET isVerified = 1, token = NULL WHERE token = ?';
-    db.query(verifyTokenQuery, [token], (err, result) => {
-        if (err) {
-            console.error('Error confirming token:', err);
-            return res.status(500).json({ message: 'Server error' });
-        }
-
-        if (result.affectedRows === 0) {
+    try {
+        const user = await User.findOne({ token });
+        if (!user) {
             return res.status(400).json({ message: 'Invalid token or user already verified' });
         }
 
-        // Redirect to login page
+        user.isVerified = true;
+        user.token = null;
+        await user.save();
+
         res.status(200).json({ 
             message: 'Email confirmed successfully!', 
             redirectUrl: 'http://localhost:3000/login' // Adjust the URL if needed
         });
-    });
+    } catch (error) {
+        console.error('Error confirming token:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 // Signup route
