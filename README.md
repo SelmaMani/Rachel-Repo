@@ -1,6 +1,3 @@
-Bien sûr ! Voici la version en français du fichier README :
-
----
 
 # **Recette Magique : Application Web de Suggestions de Recettes**
 
@@ -128,6 +125,3 @@ Rendez-vous sur `http://localhost:3000` dans votre navigateur.
 4. **Mode hors ligne**  
    - Permettre aux utilisateurs d'accéder aux recettes sauvegardées sans connexion Internet.
 
----
-
-Cela devrait répondre à votre besoin pour une version en français du fichier README. Vous pouvez adapter le contenu selon vos besoins spécifiques et ajouter des informations supplémentaires si nécessaire.
