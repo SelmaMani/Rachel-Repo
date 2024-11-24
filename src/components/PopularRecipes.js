@@ -1,35 +1,35 @@
 import React from 'react';
-import '../App.css'; // Ensure your CSS is linked correctly
-import risottoImg from '../assets/risotto.png'; // Import images
+import '../App.css'; // Assurez-vous que votre CSS est correctement lié
+import risottoImg from '../assets/risotto.png'; // Importer les images
 import enchiladaImg from '../assets/enchiladas.png';
 import greekSaladImg from '../assets/greek.png';
 
 const PopularRecipes = () => {
   return (
     <section className="popular-recipes">
-      <h2 className="section-title title-big">Popular Recipes</h2>
+      <h2 className="section-title title-big">Recettes Populaires</h2>
       
-      {/* Recipe categories buttons */}
+      {/* Boutons des catégories de recettes */}
       <div className="recipe-categories">
         <button className="category-button text-normal-volkorn active">Cuisines</button>
-        <button className="category-button text-normal-volkorn">Dietary Preferences</button>
-        <button className="category-button text-normal-volkorn">Meal Types</button>
-        <button className="category-button text-normal-volkorn">Special Diets</button>
+        <button className="category-button text-normal-volkorn">Préférences Alimentaires</button>
+        <button className="category-button text-normal-volkorn">Types de Repas</button>
+        <button className="category-button text-normal-volkorn">Régimes Spéciaux</button>
       </div>
 
-      {/* Recipe items grid */}
+      {/* Grille des éléments de recettes */}
       <div className="recipe-grid">
         <div className="recipe-item">
-          <img src={risottoImg} alt="Italian Risotto" className="recipe-image" />
-          <p className="recipe-name text-normal-volkorn">Italian Risotto</p>
+          <img src={risottoImg} alt="Risotto Italien" className="recipe-image" />
+          <p className="recipe-name text-normal-volkorn">Risotto Italien</p>
         </div>
         <div className="recipe-item">
-          <img src={enchiladaImg} alt="Mexican Enchiladas" className="recipe-image" />
-          <p className="recipe-name text-normal-volkorn">Mexican Enchiladas</p>
+          <img src={enchiladaImg} alt="Enchiladas Mexicaines" className="recipe-image" />
+          <p className="recipe-name text-normal-volkorn">Enchiladas Mexicaines</p>
         </div>
         <div className="recipe-item">
-          <img src={greekSaladImg} alt="Greek Salad" className="recipe-image" />
-          <p className="recipe-name text-normal-volkorn">Greek Salad</p>
+          <img src={greekSaladImg} alt="Salade Grecque" className="recipe-image" />
+          <p className="recipe-name text-normal-volkorn">Salade Grecque</p>
         </div>
       </div>
     </section>

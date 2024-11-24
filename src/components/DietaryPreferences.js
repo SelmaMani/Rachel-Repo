@@ -1,195 +1,195 @@
 import React, { useState } from "react";
-import "../App.css"; // Assuming you have shared styles
+import "../App.css"; // En supposant que vous avez des styles partagés
 import { useNavigate } from "react-router-dom";
 
 const DietaryPreferences = () => {
   const preferences = {
-    "Gluten-Related": [
-      "All",
-      "Wheat",
-      "Barley",
-      "Rye",
-      "Oats",
-      "Spelt",
-      "Semolina",
-      "Durum",
+    "Lié au Gluten": [
+      "Tous",
+      "Blé",
+      "Orge",
+      "Seigle",
+      "Avoine",
+      "Épeautre",
+      "Semoule",
+      "Blé dur",
       "Farro",
       "Kamut",
       "Triticale",
       "Couscous",
       "Malt"
     ],
-    "Dairy-Related": [
-      "All",
-      "Milk",
-      "Cheese",
-      "Yogurt",
-      "Butter",
-      "Cream",
-      "Ice Cream",
+    "Lié aux Produits Laitiers": [
+      "Tous",
+      "Lait",
+      "Fromage",
+      "Yaourt",
+      "Beurre",
+      "Crème",
+      "Glace",
       "Ghee",
-      "Whey",
-      "Casein",
+      "Petit-lait",
+      "Caséine",
       "Lactose"
     ],
-    "Nut-Related": [
-      "All",
-      "Peanuts",
-      "Almonds",
-      "Walnuts",
-      "Pistachios",
-      "Hazelnuts",
-      "Cashews",
-      "Brazil Nuts",
-      "Macadamia Nuts",
-      "Pecans",
-      "Pine Nuts",
-      "Chestnuts"
+    "Lié aux Noix": [
+      "Tous",
+      "Cacahuètes",
+      "Amandes",
+      "Noix",
+      "Pistaches",
+      "Noisettes",
+      "Noix de cajou",
+      "Noix du Brésil",
+      "Noix de macadamia",
+      "Pécans",
+      "Pignons de pin",
+      "Châtaignes"
     ],
-    "Soy-Related": [
-      "All",
+    "Lié au Soja": [
+      "Tous",
       "Tofu",
-      "Soy Sauce",
+      "Sauce soja",
       "Miso",
       "Edamame",
-      "Soy Milk",
+      "Lait de soja",
       "Tempeh",
-      "Soy Protein",
-      "Soy Lecithin",
-      "Soy Flour"
+      "Protéine de soja",
+      "Lécithine de soja",
+      "Farine de soja"
     ],
-    "Egg-Related": [
-      "All",
-      "Whole Eggs",
-      "Egg Whites",
-      "Egg Yolks",
+    "Lié aux Œufs": [
+      "Tous",
+      "Œufs entiers",
+      "Blancs d'œufs",
+      "Jaunes d'œufs",
       "Mayonnaise",
-      "Custards",
+      "Crèmes dessert",
       "Quiche",
-      "Baked Goods",
-      "Egg Powders",
-      "Aioli"
+      "Produits de boulangerie",
+      "Poudres d'œufs",
+      "Aïoli"
     ],
-    "Seafood-Related": [
-      "All",
-      "Shellfish",
-      "Shrimp",
-      "Crab",
-      "Lobster",
-      "Oysters",
-      "Mussels",
-      "Clams",
-      "Scallops",
-      "Fish",
-      "Salmon",
-      "Tuna",
-      "Cod",
-      "Mackerel",
-      "Anchovies",
+    "Lié aux Fruits de Mer": [
+      "Tous",
+      "Crustacés",
+      "Crevettes",
+      "Crabe",
+      "Homard",
+      "Huîtres",
+      "Moules",
+      "Palourdes",
+      "Coquilles Saint-Jacques",
+      "Poisson",
+      "Saumon",
+      "Thon",
+      "Cabillaud",
+      "Maquereau",
+      "Anchois",
       "Caviar",
-      "Herring",
+      "Hareng",
       "Tilapia",
-      "Swordfish",
+      "Espadon",
       "Sardines"
     ],
-    "Meat-Related": [
-      "All",
-      "Pork",
-      "Beef",
-      "Chicken",
-      "Lamb",
-      "Turkey",
-      "Game Meat",
-      "Veal",
-      "Duck",
-      "Goat",
-      "Rabbit",
+    "Lié à la Viande": [
+      "Tous",
+      "Porc",
+      "Bœuf",
+      "Poulet",
+      "Agneau",
+      "Dinde",
+      "Gibier",
+      "Veau",
+      "Canard",
+      "Chèvre",
+      "Lapin",
       "Bison",
-      "Venison",
-      "Offal (e.g., Liver, Kidney)"
+      "Venaison",
+      "Abats (ex : Foie, Reins)"
     ],
-    "Legume-Related": [
-      "All",
-      "Lentils",
-      "Chickpeas",
-      "Black Beans",
-      "Kidney Beans",
-      "Navy Beans",
-      "Pinto Beans",
-      "Fava Beans",
-      "Green Beans",
-      "Peas",
-      "Soybeans"
+    "Lié aux Légumineuses": [
+      "Tous",
+      "Lentilles",
+      "Pois chiches",
+      "Haricots noirs",
+      "Haricots rouges",
+      "Haricots blancs",
+      "Haricots pinto",
+      "Fèves",
+      "Haricots verts",
+      "Pois",
+      "Soja"
     ],
-    "Fruit-Related": [
-      "All",
-      "Citrus Fruits",
+    "Lié aux Fruits": [
+      "Tous",
+      "Agrumes",
       "Oranges",
-      "Lemons",
-      "Limes",
-      "Grapefruit",
-      "Apples",
-      "Bananas",
-      "Berries",
-      "Strawberries",
-      "Blueberries",
-      "Raspberries",
-      "Blackberries",
-      "Mango",
-      "Pineapple",
-      "Peaches",
-      "Cherries",
-      "Grapes",
+      "Citrons",
+      "Citrons verts",
+      "Pamplemousse",
+      "Pommes",
+      "Bananes",
+      "Baies",
+      "Fraises",
+      "Myrtilles",
+      "Framboises",
+      "Mûres",
+      "Mangue",
+      "Ananas",
+      "Pêches",
+      "Cerises",
+      "Raisins",
       "Melons",
-      "Papaya",
-      "Pomegranate"
+      "Papaye",
+      "Grenade"
     ],
-    "Vegetable-Related": [
-      "All",
-      "Tomatoes",
-      "Potatoes",
-      "Spinach",
-      "Kale",
-      "Carrots",
-      "Onions",
-      "Garlic",
-      "Bell Peppers",
-      "Broccoli",
-      "Cauliflower",
-      "Cabbage",
-      "Celery",
-      "Mushrooms",
-      "Zucchini",
-      "Squash",
-      "Eggplant",
-      "Asparagus",
-      "Beets",
-      "Brussels Sprouts"
+    "Lié aux Légumes": [
+      "Tous",
+      "Tomates",
+      "Pommes de terre",
+      "Épinards",
+      "Chou frisé",
+      "Carottes",
+      "Oignons",
+      "Ail",
+      "Poivrons",
+      "Brocoli",
+      "Chou-fleur",
+      "Chou",
+      "Céleri",
+      "Champignons",
+      "Courgettes",
+      "Courges",
+      "Aubergines",
+      "Asperges",
+      "Betteraves",
+      "Choux de Bruxelles"
     ],
-    "Seed-Related": [
-      "All",
-      "Sesame Seeds",
-      "Sunflower Seeds",
-      "Pumpkin Seeds",
-      "Chia Seeds",
-      "Flaxseeds",
-      "Poppy Seeds",
-      "Hemp Seeds",
+    "Lié aux Graines": [
+      "Tous",
+      "Graines de sésame",
+      "Graines de tournesol",
+      "Graines de citrouille",
+      "Graines de chia",
+      "Graines de lin",
+      "Graines de pavot",
+      "Graines de chanvre",
       "Quinoa"
     ],
-    "Beverage-Related": [
-      "All",
-      "Coffee",
-      "Tea",
-      "Juice",
-      "Soft Drinks",
-      "Alcohol",
-      "Beer",
-      "Wine",
-      "Spirits",
-      "Milk",
-      "Plant-Based Milk (e.g., Almond, Soy, Oat)"
-    ]  
+    "Lié aux Boissons": [
+      "Tous",
+      "Café",
+      "Thé",
+      "Jus",
+      "Boissons gazeuses",
+      "Alcool",
+      "Bière",
+      "Vin",
+      "Spiritueux",
+      "Lait",
+      "Lait végétal (ex : Amande, Soja, Avoine)"
+    ]
   };
 
   const [selectedPreferences, setSelectedPreferences] = useState(
@@ -199,7 +199,7 @@ const DietaryPreferences = () => {
         preferences[category].reduce(
           (acc, option) => ({
             ...acc,
-            [option]: option === "All"
+            [option]: option === "Tous"
           }),
           {}
         )
@@ -213,14 +213,12 @@ const DietaryPreferences = () => {
     setSelectedPreferences((prev) => {
       const newCategory = { ...prev[category] };
 
-      if (option === "All") {
-        // If "All" is selected, deselect all others
+      if (option === "Tous") {
         Object.keys(newCategory).forEach((key) => {
-          newCategory[key] = key === "All";
+          newCategory[key] = key === "Tous";
         });
       } else {
-        // Deselect "All" and toggle the selected option
-        newCategory.All = false;
+        newCategory.Tous = false;
         newCategory[option] = !newCategory[option];
       }
 
@@ -231,15 +229,46 @@ const DietaryPreferences = () => {
     });
   };
 
-  const handleProceed = () => {
-    console.log("Selected Preferences:", selectedPreferences);
-    navigate("/recipes");
-  };
+  const handleProceed = async () => {
+    console.log("Selected preferences:", selectedPreferences);
+
+    try {
+        // Send preferences to the backend
+        const response = await fetch('http://localhost:5000/api/save-preferences', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ preferences: selectedPreferences }),
+            credentials: 'include', // Ensure session cookies are sent with the request
+        });
+
+        // Log the response before attempting to parse JSON
+        const textResponse = await response.text(); // Get the raw response as text
+        console.log("Response text:", textResponse);
+
+        const data = JSON.parse(textResponse); // Now parse the response as JSON
+
+        if (response.ok) {
+            console.log("Preferences saved successfully!");
+            navigate("/recettes"); // Redirect to the recipes page (or wherever you want)
+        } else {
+            alert("Error saving preferences: " + data.error);
+        }
+    } catch (error) {
+        console.error("Error saving preferences:", error);
+        alert("An error occurred.");
+    }
+};
+
+  
 
   return (
     <div className="dietary-preferences-page">
-      <h1 className="title-big">Dietary Restrictions & Food Preferences</h1>
-      <p className="text-normal">Before starting, what food <b>you can not eat</b> ?</p>
+      <h1 className="title-big">Restrictions Alimentaires et Préférences</h1>
+      <p className="text-normal">
+        Avant de commencer, quels aliments <b>ne pouvez-vous pas manger</b> ?
+      </p>
 
       <div className="preferences-container">
         {Object.entries(preferences).map(([category, options]) => (
@@ -262,8 +291,8 @@ const DietaryPreferences = () => {
         ))}
       </div>
 
-      <button className="proceed-button" onClick={handleProceed}>
-        Proceed
+      <button className="proceed-button text-normal-volkorn" onClick={handleProceed}>
+        Continuer
       </button>
     </div>
   );

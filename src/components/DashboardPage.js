@@ -4,11 +4,11 @@ import '../App.css';
 const DashboardPage = () => {
   return (
     <div className="dashboard-hero">
-      <h1 className="title-big">Welcome to Your Dashboard!</h1>
+      <h1 className="title-big">Bienvenue sur Votre Tableau de Bord !</h1>
       <p className="text-normal">
-        Here you can manage your recipes, dietary preferences, and much more!
+        Ici, vous pouvez gérer vos recettes, vos préférences alimentaires, et bien plus encore !
       </p>
-      {/* Add more content or functionality for the dashboard here */}
+      {/* Ajoutez plus de contenu ou de fonctionnalités pour le tableau de bord ici */}
     </div>
   );
 };

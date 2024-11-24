@@ -524,10 +524,9 @@ footer {
 }
 
 .proceed-button {
-  background-color: #A98467;
+  background-color: var(--light-green);
   color: white;
-  border: none;
-  border-radius: 5px;
+  border: 2px dashed var(--black);
   padding: 0.8rem 2rem;
   cursor: pointer;
   margin-top: 2rem;

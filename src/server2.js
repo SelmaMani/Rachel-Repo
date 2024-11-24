@@ -8,7 +8,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
 const app = express();
-const port = 5000;
+const port = 3000;
 
 // Middleware
 app.use(cors({
@@ -98,7 +98,7 @@ const handleSignup = (req, res) => {
                 }
 
                 // Send confirmation email
-                const confirmationLink = `http://localhost:3000/confirm/${token}`;
+                const confirmationLink = `http://localhost:5000/confirm/${token}`;
                 const mailOptions = {
                     from: 'samah.ikramfarez@gmail.com', // Your email
                     to: email,
