@@ -18,7 +18,7 @@ const Dashboard = () => {
             case 404:
               throw new Error('Recipes not found. Please check your ingredients or try again later.');
             case 500:
-              throw new Error('Server error. Please try again later.');
+              throw new Error('Server error. Please try again.');
             default:
               throw new Error('An unexpected error occurred.');
           }
