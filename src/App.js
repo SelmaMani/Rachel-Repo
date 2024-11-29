@@ -16,7 +16,6 @@ import "./App.css";
 function App() {
   return (
     <Router>
-      {" "}
       {/* Wrap your application in Router */}
       <div className="App">
         <Navbar />
@@ -38,8 +37,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           {/* Route for the signup page */}
           <Route path="/signup" element={<SignupPage />} />
-          {/* Add the Dashboard route */}
-          <Route path="/dashboard" component={DashboardPage} />
+          {/* Add the Dashboard route with the correct 'element' syntax */}
+          <Route path="/dashboard" element={<DashboardPage />} />
           {/* Add the Confirmation route */}
           <Route path="/confirm/:token" element={<LoginPage />} />
           {/* Other routes */}

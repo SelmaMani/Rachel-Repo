@@ -20,9 +20,9 @@ app.use(cors({
 
 // Configure express-session middleware
 app.use(session({
-    secret: '123', // Use env variable for a better secret in production
-    resave: false,
-    saveUninitialized: false,
+    secret: process.env.SESSION_SECRET || '123', // Use env variable for a better secret in production
+    resave: true,
+    saveUninitialized: true,
     cookie: {
         secure: false, // Set to true if using HTTPS
         httpOnly: true,
@@ -39,18 +39,39 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB Atlas'))
     .catch((err) => console.error('Error connecting to MongoDB Atlas: ', err));
 
-// Setup Nodemailer transport
-const transporter = nodemailer.createTransport({
-    service: 'gmail', // You can use other services too
-    auth: {
-        user: 'samah.ikramfarez@gmail.com', // Your email
-        pass: 'foqf vrer mjed uirp' // Your email password or an app password
-    }
-});
-
 // Models
 const User = require('./models/User'); // Import User schema
 
+// Save preferences route
+app.post('/api/save-preferences', async (req, res) => {
+    console.log('Session data:', req.session);
+    try {
+        const { preferences } = req.body;
+
+        // Make sure the user is logged in and has a valid session
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'Unauthorized. Please log in first.' });
+        }
+
+        // Find the user and update their food preferences
+        const user = await User.findOne({ email: req.session.user.email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update the user's preferences in the database
+        user.foodPreferences = preferences;
+        await user.save();
+
+        res.status(200).json({ message: 'Preferences saved successfully!' });
+
+    } catch (error) {
+        console.error('Error saving preferences:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Signup handler
 const handleSignup = async (req, res) => {
     try {
         const { fullName, email, password, foodPreferences } = req.body;
@@ -109,45 +130,46 @@ const handleSignup = async (req, res) => {
     }
 };
 
+// Login handler
 const handleLogin = async (req, res) => {
     try {
-      const { email, password } = req.body;
-  
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(401).json({ error: 'User not found' });
-      }
-  
-      if (!user.isVerified) {
-        return res.status(403).json({ error: 'Email not confirmed. Please check your inbox.' });
-      }
-  
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.status(401).json({ error: 'Incorrect password' });
-      }
-  
-      // Check if the user has preferences
-      if (Object.keys(user.foodPreferences).length === 0) {
-        return res.status(200).json({
-          message: 'Login successful',
-          redirectUrl: '/preferences',  // Just send relative path (NOT full URL)
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ error: 'User not found' });
+        }
+
+        if (!user.isVerified) {
+            return res.status(403).json({ error: 'Email not confirmed. Please check your inbox.' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Incorrect password' });
+        }
+
+        // Create session if everything is fine
+        req.session.user = {
+            email: user.email,
+            fullName: user.full_name,
+        };
+
+        // Check if the user has preferences
+        if (Object.keys(user.foodPreferences).length === 0) {
+            return res.status(200).json({
+                message: 'Login successful',
+                redirectUrl: '/preferences',  // Relative path (NOT full URL)
+            });
+        }
+
+        res.status(200).json({
+            message: 'Login successful',
+            redirectUrl: '/dashboard',  // Relative path to dashboard
         });
-      }
-  
-      // Create session if everything is fine
-      req.session.user = {
-        email: user.email,
-        fullName: user.full_name,
-      };
-  
-      res.status(200).json({
-        message: 'Login successful',
-        redirectUrl: '/dashboard',  // Relative path to dashboard
-      });
     } catch (error) {
-      console.error('Error during login:', error);
-      res.status(500).json({ error: 'Server error' });
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Server error' });
     }
 };
 
@@ -200,9 +222,6 @@ app.post('/signup', handleSignup);
 
 // Login route
 app.post('/login', handleLogin);
-
-// Apply the preferences routes after session and other middlewares are configured
-app.use('/api/preferences', preferencesRoutes);
 
 // Start the server
 app.listen(port, () => {

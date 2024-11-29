@@ -1,9 +1,13 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');  // Import the CORS package
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
-const SPOONACULAR_API_KEY = '23a7bcbc7632490a9d0cbdd754f79fcc'; // Your API key
+const SPOONACULAR_API_KEY = 'e1b5c0675f514fcb86cbecbeb5fbee3f'; // Your API key
+
+// Use CORS middleware to allow requests from your frontend (localhost:3000)
+app.use(cors());
 
 // List of common meat ingredients to check against
 const meatKeywords = ['chicken', 'beef', 'pork', 'lamb', 'turkey', 'duck', 'fish', 'seafood'];
@@ -17,13 +21,6 @@ const filterNonVegetarianIngredients = (ingredients) => {
 const cleanRecipeName = (title) => {
     return title.replace(/^How to Make\s+/i, ''); // Remove 'How to' at the beginning of the title
 };
-
-
-
-// Root route for the homepage
-app.get('/', (req, res) => {
-    res.send('Welcome to the Recipe Finder API. Use /fetch-recipes/:ingredients/:diet? to search for recipes.');
-});
 
 // Endpoint to fetch recipes based on ingredients and dietary restrictions
 app.get('/fetch-recipes/:ingredients/:diet?', async (req, res) => {
@@ -41,7 +38,7 @@ app.get('/fetch-recipes/:ingredients/:diet?', async (req, res) => {
     }
 
     if (ingredients.length === 0) {
-        return res.status(400).json({ error: 'No valid vegetarian ingredients were provided.' }); // If no ingredients were provided
+        return res.status(400).json({ error: 'No valid vegetarian ingredients were provided.' });
     }
 
     const ingredientsString = ingredients.join(',');

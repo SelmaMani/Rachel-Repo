@@ -240,18 +240,18 @@ const DietaryPreferences = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ preferences: selectedPreferences }),
-            credentials: 'include', // Ensure session cookies are sent with the request
+            credentials: 'include', // Ensures cookies are sent with the request
         });
 
-        // Log the response before attempting to parse JSON
-        const textResponse = await response.text(); // Get the raw response as text
+        // Log the raw response text
+        const textResponse = await response.text();
         console.log("Response text:", textResponse);
 
-        const data = JSON.parse(textResponse); // Now parse the response as JSON
+        const data = JSON.parse(textResponse);
 
         if (response.ok) {
             console.log("Preferences saved successfully!");
-            navigate("/recettes"); // Redirect to the recipes page (or wherever you want)
+            navigate("/recettes");
         } else {
             alert("Error saving preferences: " + data.error);
         }
