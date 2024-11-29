@@ -1,86 +1,86 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import '../App.css'; // Ensure you import the App.css file
-import inputIcon from '../assets/input_icon.png'; // Adjust the path as needed
+import { useNavigate } from 'react-router-dom'; // Importer useNavigate
+import '../App.css'; // Assurez-vous que votre CSS est correctement lié
+import inputIcon from '../assets/input_icon.png'; // Ajustez le chemin si nécessaire
 
 const SignupPage = () => {
+  // Hooks d'état pour gérer les données du formulaire et la gestion des erreurs
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); // Initialiser useNavigate
 
+  // Gérer la soumission du formulaire d'inscription
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Clear previous error messages
+    // Effacer les messages d'erreur précédents
     setErrorMessage('');
 
-    // Validate password confirmation
+    // Vérifier si les mots de passe correspondent
     if (password !== confirmedPassword) {
-      setErrorMessage('Passwords do not match.');
+      setErrorMessage('Les mots de passe ne correspondent pas.');
       return;
     }
 
+    // Rassembler les données de l'utilisateur à envoyer au backend
     const userData = {
       fullName,
       email,
       password,
     };
 
-    setIsLoading(true); // Start loading state
+    setIsLoading(true); // Définir l'état de chargement sur true
 
     try {
+      // Envoyer la requête POST au serveur pour créer un nouvel utilisateur
       const response = await fetch('http://localhost:5000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Include credentials for cookies and sessions
+        credentials: 'include', // Inclure les cookies/sessions si nécessaire
         body: JSON.stringify(userData),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Successful signup
-        navigate('/login'); // Redirect to the login page after successful signup
+        // Inscription réussie, rediriger vers la page de connexion
+        navigate('/login');
       } else {
-        // Handle backend errors (e.g., user already exists, validation errors)
-        setErrorMessage(data.message || 'Signup failed. Please try again.');
+        // Gérer les erreurs comme un utilisateur déjà existant ou d'autres erreurs de validation
+        setErrorMessage(data.message || 'L\'inscription a échoué. Veuillez réessayer.');
       }
     } catch (error) {
-      // Handle network or server errors
-      console.error('Error during signup:', error);
-      setErrorMessage('There was an error connecting to the server.');
+      // Gérer les erreurs réseau ou serveur
+      console.error('Erreur lors de l\'inscription :', error);
+      setErrorMessage('Il y a eu une erreur lors de la connexion au serveur.');
     } finally {
-      setIsLoading(false); // End loading state
+      setIsLoading(false); // Fin de l'état de chargement
     }
   };
 
-  // Prevent drag and drop
-  const preventDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const preventDrop = (e) => {
-    e.preventDefault();
-  };
+  // Empêcher le comportement de glisser-déposer sur les champs de saisie
+  const preventDragOver = (e) => e.preventDefault();
+  const preventDrop = (e) => e.preventDefault();
 
   return (
     <div className="signup-hero">
-      <h1 className="title-big">Welcome With Us!</h1>
+      <h1 className="title-big">Bienvenue chez nous!</h1>
       <p className="text-normal">
-        Let us find for you the best recipes you can get with only what you have available at home.
+        Laissez-nous trouver pour vous les meilleures recettes que vous pouvez préparer avec ce que vous avez à la maison.
       </p>
       <form onSubmit={handleSignup} className="signup-form">
+        {/* Champ de saisie pour le nom complet */}
         <div className="input-group">
-          <img src={inputIcon} alt="Full Name Icon" className="input-icon" />
+          <img src={inputIcon} alt="Icône Nom Complet" className="input-icon" />
           <input 
             type="text" 
-            placeholder="Full Name" 
+            placeholder="Nom Complet" 
             value={fullName}
             onDragOver={preventDragOver}
             onDrop={preventDrop}
@@ -89,8 +89,10 @@ const SignupPage = () => {
             className="signup-input text-normal-volkorn" 
           />
         </div>
+        
+        {/* Champ de saisie pour l'email */}
         <div className="input-group">
-          <img src={inputIcon} alt="Email Icon" className="input-icon" />
+          <img src={inputIcon} alt="Icône Email" className="input-icon" />
           <input 
             type="email" 
             placeholder="Email" 
@@ -102,11 +104,13 @@ const SignupPage = () => {
             className="signup-input text-normal-volkorn" 
           />
         </div>
+        
+        {/* Champ de saisie pour le mot de passe */}
         <div className="input-group">
-          <img src={inputIcon} alt="Password Icon" className="input-icon" />
+          <img src={inputIcon} alt="Icône Mot de passe" className="input-icon" />
           <input 
             type="password" 
-            placeholder="Password" 
+            placeholder="Mot de Passe" 
             value={password}
             onDragOver={preventDragOver}
             onDrop={preventDrop}
@@ -115,11 +119,13 @@ const SignupPage = () => {
             className="signup-input text-normal-volkorn" 
           />
         </div>
+        
+        {/* Champ de saisie pour la confirmation du mot de passe */}
         <div className="input-group">
-          <img src={inputIcon} alt="Confirm Password Icon" className="input-icon" />
+          <img src={inputIcon} alt="Icône Confirmer le mot de passe" className="input-icon" />
           <input 
             type="password" 
-            placeholder="Confirm Password" 
+            placeholder="Confirmer le Mot de Passe" 
             value={confirmedPassword}
             onDragOver={preventDragOver}
             onDrop={preventDrop}
@@ -128,22 +134,25 @@ const SignupPage = () => {
             className="signup-input text-normal-volkorn" 
           />
         </div>
-        
+
+        {/* Afficher le message d'erreur si nécessaire */}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
+        {/* Bouton de soumission */}
         <button type="submit" className="signup-button title-medium" disabled={isLoading}>
-          {isLoading ? 'Signing up...' : 'Sign Up'}
+          {isLoading ? 'Inscription en cours...' : 'S\'inscrire'}
         </button>
       </form>
-      {/* Login Redirect Link */}
+
+      {/* Lien pour se rediriger vers la page de connexion si l'utilisateur a déjà un compte */}
       <p className="login-redirect text-normal">
-        You already have an account?{' '}
+        Vous avez déjà un compte ?{' '}
         <span 
           className="login-link" 
-          onClick={() => navigate('/login')} // Redirect to login page
-          style={{ color: '#A98467', cursor: 'pointer' }} // Optional styling
+          onClick={() => navigate('/login')} 
+          style={{ color: '#A98467', cursor: 'pointer' }}
         >
-          Login
+          Se connecter
         </span>
       </p>
     </div>

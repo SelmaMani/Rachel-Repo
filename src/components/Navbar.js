@@ -1,24 +1,24 @@
 import React from 'react';
 import '../App.css';
-import logo from '../assets/logo.png'; // Import the image
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import logo from '../assets/logo.png'; // Importer l'image
+import { useNavigate } from 'react-router-dom'; // Importer useNavigate
 
 const Navbar = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); // Initialiser useNavigate
 
-  // Function to handle logo click
+  // Fonction pour gérer le clic sur le logo
   const handleLogoClick = () => {
-    navigate('/'); // Redirect to the index/home page
+    navigate('/'); // Rediriger vers la page d'accueil
   };
 
   return (
     <nav className="navbar">
       <div className="logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-        <img src={logo} alt="Logo" /> {/* Use the imported image */}
+        <img src={logo} alt="Logo" /> {/* Utiliser l'image importée */}
       </div>
       <ul className="nav-links">
         <li className="text-normal-volkorn"><a href="#menu">Menu</a></li>
-        <li className="text-normal-volkorn"><a href="#about">About</a></li>
+        <li className="text-normal-volkorn"><a href="#about">À propos</a></li>
         <li className="text-normal-volkorn"><a href="#contact">Contact</a></li>
       </ul>
     </nav>

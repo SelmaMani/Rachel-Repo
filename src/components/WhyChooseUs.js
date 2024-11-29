@@ -1,38 +1,38 @@
 import React from 'react';
-import '../App.css'; // Assuming you have App.css for global styles
+import '../App.css'; // En supposant que vous avez App.css pour les styles globaux
 
-const WhyChooseUs = () => {
+const PourquoiNousChoisir = () => {
   return (
     <section className="why-choose-us">
-      <h2>Why Choose Us</h2>
+      <h2>Pourquoi Nous Choisir</h2>
       <div className="grid-container">
         <div className="grid-item">
-          <h3>Personalized Suggestions</h3>
-          <p>With available ingredients, preferences, and cooking time.</p>
+          <h3>Suggestions Personnalisées</h3>
+          <p>Avec les ingrédients disponibles, les préférences et le temps de cuisson.</p>
         </div>
         <div className="grid-item">
-          <h3>Reduce Food Waste</h3>
-          <p>Turn leftover ingredients into delicious meals and avoid waste.</p>
+          <h3>Réduire le Gaspillage Alimentaire</h3>
+          <p>Transformez les ingrédients restants en repas délicieux et évitez le gaspillage.</p>
         </div>
         <div className="grid-item">
-          <h3>Simple and Easy</h3>
-          <p>Simplify your cooking with our easy navigation.</p>
+          <h3>Simple et Facile</h3>
+          <p>Simplifiez votre cuisine avec notre navigation facile.</p>
         </div>
         <div className="grid-item">
-          <h3>Diverse Recipe Collection</h3>
-          <p>Explore a wide range of recipes from various cuisines.</p>
+          <h3>Collection de Recettes Diversifiées</h3>
+          <p>Explorez une large gamme de recettes provenant de diverses cuisines.</p>
         </div>
         <div className="grid-item">
-          <h3>Dietary Flexibility</h3>
-          <p>Find recipes for vegan, gluten-free, and other dietary needs.</p>
+          <h3>Flexibilité Alimentaire</h3>
+          <p>Trouvez des recettes adaptées aux besoins végétaliens, sans gluten et autres besoins alimentaires.</p>
         </div>
         <div className="grid-item">
-          <h3>Save More Time</h3>
-          <p>Find recipes tailored to your cooking time without rethinking.</p>
+          <h3>Gagnez Plus de Temps</h3>
+          <p>Trouvez des recettes adaptées à votre temps de cuisson sans avoir à réfléchir à nouveau.</p>
         </div>
       </div>
     </section>
   );
 };
 
-export default WhyChooseUs;
+export default PourquoiNousChoisir;
