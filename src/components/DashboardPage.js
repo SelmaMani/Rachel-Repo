@@ -6,20 +6,30 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Fetch data directly from your backend API
-    fetch('http://localhost:4000/fetch-recipes/tomato/vegetarian')  // Update the URL to match your tested endpoint
+    fetch('https://recettemagique.onrender.com/fetch-recipes/tomato/vegetarian')  // Update the URL to match your tested endpoint
       .then(response => {
         if (response.ok) {
           return response.text();  // Convert the response to text (since you're dealing with raw text data)
         } else {
-          throw new Error('Error fetching recipes');
+          // Handle different error codes and provide specific messages
+          switch (response.status) {
+            case 402:
+              throw new Error('Daily API limit exceeded. Please try again later.');
+            case 404:
+              throw new Error('Recipes not found. Please check your ingredients or try again later.');
+            case 500:
+              throw new Error('Server error. Please try again later.');
+            default:
+              throw new Error('An unexpected error occurred.');
+          }
         }
       })
       .then(data => {
         setData(data);  // Set the raw data from the response
       })
       .catch(error => {
-        setError('Error fetching recipes. Please try again later.');
-        console.error(error);
+        setError(error.message);  // Use the specific error message
+        console.error(error);  // Log the error for debugging purposes
       });
   }, []);
 
