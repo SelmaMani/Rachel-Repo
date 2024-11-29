@@ -37,7 +37,7 @@ const SignupPage = () => {
 
     try {
       // Envoyer la requête POST au serveur pour créer un nouvel utilisateur
-      const response = await fetch('http://localhost:5000/signup', {
+      const response = await fetch('https://recettemagique.onrender.com/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ const port = 5000;
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:3000', // Change to your frontend URL
+    origin: 'https://recette-magique.vercel.app/', // Change to your frontend URL
     credentials: true // Allow cookies to be sent
 }));
 
@@ -102,7 +102,7 @@ const handleSignup = async (req, res) => {
         await newUser.save();
 
         // Create the confirmation link with the token
-        const confirmationLink = `http://localhost:5000/confirm/${token}`;
+        const confirmationLink = `https://recettemagique.onrender.com/confirm/${token}`;
 
         // Prepare the email content
         const mailOptions = {
@@ -199,7 +199,7 @@ app.get('/confirm/:token', async (req, res) => {
         if (user.isVerified) {
             return res.status(200).json({
                 message: 'Email already confirmed. You can now login.',
-                redirectUrl: 'http://localhost:3000/login',  // Redirect to login page
+                redirectUrl: 'https://recette-magique.vercel.app/login',  // Redirect to login page
             });
         }
 
@@ -209,7 +209,7 @@ app.get('/confirm/:token', async (req, res) => {
         await user.save();  // Save the updated user
 
         // Redirect to login page after successful confirmation
-        res.redirect('http://localhost:3000/login');  // Redirect user to login page
+        res.redirect('https://recette-magique.vercel.app/login');  // Redirect user to login page
 
     } catch (error) {
         console.error('Error confirming token:', error);

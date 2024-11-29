@@ -98,7 +98,7 @@ const handleSignup = (req, res) => {
                 }
 
                 // Send confirmation email
-                const confirmationLink = `http://localhost:5000/confirm/${token}`;
+                const confirmationLink = `https://recettemagique.onrender.com/confirm/${token}`;
                 const mailOptions = {
                     from: 'samah.ikramfarez@gmail.com', // Your email
                     to: email,
