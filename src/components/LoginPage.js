@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import inputIcon from '../assets/input_icon.png';
 
@@ -8,26 +8,46 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        // Check if the user is already logged in by making an API call to the backend
+        const checkLoginStatus = async () => {
+            try {
+                const response = await fetch('https://recettemagique.onrender.com/dashboard', {
+                    method: 'GET',
+                    credentials: 'include', // Send cookies to verify session
+                });
+
+                if (response.ok) {
+                    // If the user is logged in, redirect to the dashboard
+                    navigate('/dashboard');
+                }
+            } catch (error) {
+                console.log('User is not logged in', error);
+            }
+        };
+
+        checkLoginStatus();
+    }, [navigate]); // Runs only once when the component mounts
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        // Removed recaptcha check as it is no longer needed
         const userData = { email, password };
 
         try {
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('https://recettemagique.onrender.com/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include',
+                credentials: 'include', // Make sure cookies are sent with the request
                 body: JSON.stringify(userData),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                // Redirect user if login is successful
+                // Redirect the user if login is successful
                 if (data.redirectUrl) {
                     navigate(data.redirectUrl);
                 }
@@ -70,8 +90,6 @@ const LoginPage = () => {
                     />
                 </div>
 
-                {/* reCAPTCHA component removed */}
-                
                 <button type="submit" className="login-button title-medium">Se connecter</button>
             </form>
             <p className="signup-redirect text-normal">
