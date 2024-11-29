@@ -6,7 +6,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Fetch data directly from your backend API
-    fetch('https://recettemagique.onrender.com/fetch-recipes/tomato,egg/vegetarian')  // Update the URL to match your tested endpoint
+    fetch('https://recettemagique.onrender.com/fetch-recipes/tomato/vegetarian')  // Update the URL to match your tested endpoint
       .then(response => {
         if (response.ok) {
           return response.text();  // Convert the response to text (since you're dealing with raw text data)
