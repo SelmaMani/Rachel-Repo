@@ -2,23 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import '../App.css';
 import inputIcon from '../assets/input_icon.png';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [recaptchaValue, setRecaptchaValue] = useState(null); // Store reCAPTCHA response
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        if (!recaptchaValue) {
-            alert('Please complete the CAPTCHA');
-            return; // Don't submit if CAPTCHA is not completed
-        }
-
-        const userData = { email, password, recaptchaValue }; // Include recaptchaValue in the request
+        // Removed recaptcha check as it is no longer needed
+        const userData = { email, password };
 
         try {
             const response = await fetch('http://localhost:5000/login', {
@@ -44,10 +38,6 @@ const LoginPage = () => {
             console.error('Error during login:', error);
             alert('An error occurred while logging in.');
         }
-    };
-
-    const handleRecaptchaChange = (value) => {
-        setRecaptchaValue(value); // Set the recaptcha value when user completes the CAPTCHA
     };
 
     return (
@@ -80,14 +70,8 @@ const LoginPage = () => {
                     />
                 </div>
 
-                {/* Add reCAPTCHA widget */}
-                <div className="recaptcha-container">
-                    <ReCAPTCHA
-                        sitekey="YOUR_RECAPTCHA_SITE_KEY"  // Replace with your actual site key
-                        onChange={handleRecaptchaChange}
-                    />
-                </div>
-
+                {/* reCAPTCHA component removed */}
+                
                 <button type="submit" className="login-button title-medium">Se connecter</button>
             </form>
             <p className="signup-redirect text-normal">
