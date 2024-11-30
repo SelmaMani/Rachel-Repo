@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import LogoutButton from './LogoutButton';  // Import the LogoutButton component
 
 const Dashboard = () => {
   const [data, setData] = useState('');
@@ -43,6 +44,9 @@ const Dashboard = () => {
       {/* Display the raw data received from the API */}
       <h2>Raw Recipe Data</h2>
       <pre>{data}</pre>  {/* Output the raw data directly */}
+      
+      {/* Log out button */}
+      <LogoutButton /> {/* This button triggers the logout */}
     </div>
   );
 };
