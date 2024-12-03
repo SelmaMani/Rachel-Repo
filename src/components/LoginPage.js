@@ -12,7 +12,7 @@ const LoginPage = () => {
         // Check if the user is already logged in by making an API call to the backend
         const checkLoginStatus = async () => {
             try {
-                const response = await fetch('https://recettemagique.onrender.com/dashboard', {
+                const response = await fetch('http://localhost:5000/dashboard', {
                     method: 'GET',
                     credentials: 'include', // Send cookies to verify session
                 });
@@ -35,7 +35,7 @@ const LoginPage = () => {
         const userData = { email, password };
 
         try {
-            const response = await fetch('https://recettemagique.onrender.com/login', {
+            const response = await fetch('http://localhost:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

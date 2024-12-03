@@ -8,7 +8,7 @@ const LogoutButton = () => {
     const handleLogout = async () => {
         try {
             // Send logout request to the backend
-            const response = await fetch('https://recettemagique.onrender.com/logout', {
+            const response = await fetch('http://localhost:5000/logout', {
                 method: 'POST',
                 credentials: 'include', // Include cookies (session cookie)
             });

@@ -234,7 +234,7 @@ const DietaryPreferences = () => {
 
     try {
         // Send preferences to the backend
-        const response = await fetch('https://recettemagique.onrender.com/api/save-preferences', {
+        const response = await fetch('http://localhost:5000/api/save-preferences', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
